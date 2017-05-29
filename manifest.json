@@ -1,0 +1,7 @@
+{
+  "name": "vip-aersia-player",
+  "short_name": "vip-aersia-player",
+  "description": "A Polymer player for vip.aersia.net",
+  "start_url": "/",
+  "display": "standalone"
+}

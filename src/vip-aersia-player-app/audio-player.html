@@ -1,0 +1,99 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<dom-module id="audio-player">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      #player {
+        background-color: var(--light-primary-color);
+        padding: 8px;
+        height: var(--player-size);
+        @apply --layout-horizontal;
+        @apply --layout-center;
+      }
+      #player-left {
+        @apply --layout-flex;
+      }
+      #player-center {
+
+      }
+    </style>
+    <div id="player">
+      <div id="player-left" class="flex">
+        <div id="creator"><strong>[[currentSong.creator]]</strong></div>
+        <div id="title">[[currentSong.title]]</div>
+      </div>
+      <div id="player-center">
+        <paper-icon-button id="previousButton" icon="av:skip-previous"
+          style="color: Black;" ></paper-icon-button>
+        <paper-icon-button id="playPauseButton" icon="av:play-arrow"
+          style="color: Black;"></paper-icon-button>
+        <paper-icon-button id="nextButton" icon="av:skip-next"
+          style="color: Black;" ></paper-icon-button>
+      </div>
+      <audio id="audioTrack" src={{currentSong.location}} autoPlay></audio>
+    </div>
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class AudioPlayer extends Polymer.Element {
+      static get is() { return 'audio-player'; }
+      static get properties() {
+        return {
+          currentSong: {
+            type: Object,
+            reflectToAttribute : true,
+          },
+          songNumber: {
+            type: Number,
+            reflectToAttribute : true,
+          },
+        };
+      }
+      ready() {
+        super.ready();
+        this.$.playPauseButton.addEventListener('tap', e => {this.tapPlayPause(e)});
+        this.$.previousButton.addEventListener('tap', e => {this.tapSkipButton(e, "p")});
+        this.$.nextButton.addEventListener('tap', e => {this.tapSkipButton(e, "n")});
+        this.$.audioTrack.addEventListener('loadedmetadata', console.log("Rodou"));
+        this.$.audioTrack.addEventListener('playing', e => {this.playingMusic(e)});
+        this.$.audioTrack.addEventListener('ended', e => {this.songFinished(e)});
+      }
+      tapPlayPause(e) {
+        var audio = this.$.audioTrack;
+        var button = this.$.playPauseButton;
+
+        if (audio.paused) {
+          audio.play();
+          button.icon = "av:pause";
+        } else {
+          audio.pause();
+          button.icon = "av:play-arrow";
+        }
+      }
+      tapSkipButton(e, typeSkip) {
+        this.dispatchEvent(new CustomEvent('skip-song',
+          {detail: {type: typeSkip}, bubbles: true}));
+        this.$.playPauseButton.icon = "av:play-arrow"
+      }
+      playingMusic(e) {
+        this.$.playPauseButton.icon = "av:pause"
+      }
+      songFinished(e) {
+        this.dispatchEvent(new CustomEvent('next-song', {bubbles: true}));
+      }
+    }
+
+    window.customElements.define(AudioPlayer.is, AudioPlayer);
+  </script>
+</dom-module>
