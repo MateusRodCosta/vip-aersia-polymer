@@ -2,20 +2,20 @@
 
 A Polymer player for vip.aersia.net
 
-##Why?
+## Why?
 
 Basically I'm building a relatively simple application to try and learn Polymer.
 
 In this specific application, Polymer allows me to spend less time messing with CSS or Javascript due to the available components: the graphical elements were basically already done, the styling is mostly done with mixins, using ajax to get the playlist data was easy due to a component and data binding made syncing the music list and the player reasonably easy.
 
-##Issues
+## Issues
 
 Due to poor Javascript and Polymer skills, the following issues exist:
 
 * Scrolling is poorly done (doesn't works for first song, forces the selected element to top)
 * Controls are always to the right on all devices
 
-##TODO
+## TODO
 
 * Redo scrolling, preferably with a WebComponent
 * Implement seek bar
