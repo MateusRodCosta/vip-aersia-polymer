@@ -40,18 +40,13 @@
         border-bottom: 1px solid var(--divider-color);
       }
     </style>
-    <iron-ajax
-      auto
-      url="https://aersia.nihey.org/roster.xml"
-      handle-as="xml"
-      debounce-duration="300"
-      on-response="handleResponse"></iron-ajax>
+    <iron-ajax auto="" url="https://aersia.nihey.org/roster.xml" handle-as="xml" debounce-duration="300" on-response="handleResponse"></iron-ajax>
     <div id="main">
       <app-toolbar>
-        <div main-title>VIP Aersia</div>
+        <div main-title="">VIP Aersia</div>
       </app-toolbar>
       <div id="content">
-        <paper-listbox id="musicListbox" selected={{selectedSong.songNum}}>
+        <paper-listbox id="musicListbox" selected="{{selectedSong.songNum}}">
           <template is="dom-repeat" items="[[musicList.tracks]]">
             <paper-item on-tap="handleTap">
               [[item.creator]] - [[item.title]]
@@ -59,7 +54,7 @@
           </template>
         </paper-listbox>
       </div>
-      <audio-player id="player" current-song={{selectedSong}}>
+      <audio-player id="player" current-song="{{selectedSong}}">
       </audio-player>
     </div>
   </template>

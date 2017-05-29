@@ -30,14 +30,11 @@
         <div id="title">[[currentSong.title]]</div>
       </div>
       <div id="player-center">
-        <paper-icon-button id="previousButton" icon="av:skip-previous"
-          style="color: Black;" ></paper-icon-button>
-        <paper-icon-button id="playPauseButton" icon="av:play-arrow"
-          style="color: Black;"></paper-icon-button>
-        <paper-icon-button id="nextButton" icon="av:skip-next"
-          style="color: Black;" ></paper-icon-button>
+        <paper-icon-button id="previousButton" icon="av:skip-previous" style="color: Black;"></paper-icon-button>
+        <paper-icon-button id="playPauseButton" icon="av:play-arrow" style="color: Black;"></paper-icon-button>
+        <paper-icon-button id="nextButton" icon="av:skip-next" style="color: Black;"></paper-icon-button>
       </div>
-      <audio id="audioTrack" src={{currentSong.location}} autoPlay></audio>
+      <audio id="audioTrack" src="{{currentSong.location}}" autoplay=""></audio>
     </div>
   </template>
 
