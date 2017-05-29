@@ -42,7 +42,7 @@
     </style>
     <iron-ajax
       auto
-      url="http://vip.aersia.net/roster.xml"
+      url="https://aersia.nihey.org/roster.xml"
       handle-as="xml"
       debounce-duration="300"
       on-response="handleResponse"></iron-ajax>
@@ -128,7 +128,7 @@
           newSong = numberOfSongs - 1;
 
         this.selectedSong = this.musicList.tracks[newSong];
-        
+
         var songitem = this.$.musicListbox.selectedItem;
         songitem.scrollIntoView({block: "start", behavior: "smooth"});
       }
