@@ -8,6 +8,7 @@
 <link rel="import" href="../../bower_components/paper-styles/shadow.html">
 <link rel="import" href="../../bower_components/paper-styles/typography.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="audio-player.html">
 
 <dom-module id="vip-aersia-player-app">
@@ -24,6 +25,7 @@
       }
       #content {
         @apply --layout-flex;
+        @apply --layout-vertical;
         overflow: auto;
       }
       #player {
@@ -39,6 +41,26 @@
       paper-item {
         border-bottom: 1px solid var(--divider-color);
       }
+      #listLoadingIndicator {
+        height: inherit;
+        display: block;
+
+        @apply --layout-flex;
+        @apply --layout-horizontal;
+        @apply --layout-center-justified;
+      }
+      #loadingContent {
+        @apply --layout-vertical;
+        @apply --layout-center-justified;
+        @apply --paper-font-body2;
+      }
+      #musicListbox {
+        display: none;
+      }
+      #spinnerList {
+        @apply --layout-self-center;
+        padding: 8px;
+      }
     </style>
     <iron-ajax
       auto
@@ -51,6 +73,12 @@
         <div main-title>VIP Aersia</div>
       </app-toolbar>
       <div id="content">
+        <div id="listLoadingIndicator">
+          <div id="loadingContent">
+            <paper-spinner-lite id="spinnerList" active></paper-spinner-lite>
+            <span>Loading Music List...</span>
+          </div>
+        </div>
         <paper-listbox id="musicListbox" selected={{selectedSong.songNum}}>
           <template is="dom-repeat" items="[[musicList.tracks]]">
             <paper-item on-tap="handleTap">
@@ -109,6 +137,9 @@
           arrTracks.push(track);
         }
         this.musicList = {numberOfSongs: songAmmount, tracks: arrTracks};
+        this.$.spinnerList.active = false;
+        this.$.listLoadingIndicator.style.display = "none";
+        this.$.musicListbox.style.display = "block";
       }
       handleTap(e) {
         this.selectedSong = event.model.item;
