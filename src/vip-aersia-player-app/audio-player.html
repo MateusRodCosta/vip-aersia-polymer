@@ -3,6 +3,7 @@
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-icons/av-icons.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
 
 <dom-module id="audio-player">
   <template>
@@ -20,14 +21,23 @@
       #player-left {
         @apply --layout-flex;
       }
-      #player-center {
-
+      #playerInfo {
+        display: none;
+      }
+      #playerLoading {
+        display: block;
+        padding: 8px;
       }
     </style>
     <div id="player">
       <div id="player-left" class="flex">
-        <div id="creator"><strong>[[currentSong.creator]]</strong></div>
-        <div id="title">[[currentSong.title]]</div>
+        <div id="playerLoading">
+          <paper-spinner-lite id="spinnerList" active></paper-spinner-lite>
+        </div>
+        <div id="playerInfo">
+          <div id="creator"><strong>[[currentSong.creator]]</strong></div>
+          <div id="title">[[currentSong.title]]</div>
+        </div>
       </div>
       <div id="player-center">
         <paper-icon-button id="previousButton" icon="av:skip-previous"
@@ -53,6 +63,7 @@
           currentSong: {
             type: Object,
             reflectToAttribute : true,
+            observer: '_songChanged',
           },
           songNumber: {
             type: Number,
@@ -67,6 +78,7 @@
         this.$.nextButton.addEventListener('tap', e => {this.tapSkipButton(e, "n")});
         this.$.audioTrack.addEventListener('loadedmetadata', console.log("Rodou"));
         this.$.audioTrack.addEventListener('playing', e => {this.playingMusic(e)});
+        this.$.audioTrack.addEventListener('canplay', e => {this.canPlayMusic(e)});
         this.$.audioTrack.addEventListener('ended', e => {this.songFinished(e)});
       }
       tapPlayPause(e) {
@@ -84,14 +96,29 @@
       tapSkipButton(e, typeSkip) {
         this.dispatchEvent(new CustomEvent('skip-song',
           {detail: {type: typeSkip}, bubbles: true}));
-        this.$.playPauseButton.icon = "av:play-arrow"
+        this.$.audioTrack.pause();
+        this.$.playPauseButton.icon = "av:play-arrow";
       }
       playingMusic(e) {
-        this.$.playPauseButton.icon = "av:pause"
+        this.$.playPauseButton.icon = "av:pause";
       }
       songFinished(e) {
         this.dispatchEvent(new CustomEvent('next-song', {bubbles: true}));
       }
+      loadingSong() {
+        this.$.playPauseButton.icon = "av:play-arrow";
+        this.$.playerLoading.style.display = "block";
+        this.$.playerInfo.style.display = "none";
+      }
+      canPlayMusic() {
+        this.$.audioTrack.play();
+        this.$.playerLoading.style.display = "none";
+        this.$.playerInfo.style.display = "block";
+      }
+      _songChanged() {
+        this.loadingSong();
+      }
+
     }
 
     window.customElements.define(AudioPlayer.is, AudioPlayer);
