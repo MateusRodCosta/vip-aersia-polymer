@@ -61,6 +61,10 @@
         @apply --layout-self-center;
         padding: 8px;
       }
+      #contentWrapper {
+        overflow: auto;
+        @apply --layout-flex;
+      }
     </style>
     <iron-ajax
       auto
@@ -69,24 +73,29 @@
       debounce-duration="300"
       on-response="handleResponse"></iron-ajax>
     <div id="main">
-      <app-toolbar>
-        <div main-title>VIP Aersia</div>
-      </app-toolbar>
-      <div id="content">
-        <div id="listLoadingIndicator">
-          <div id="loadingContent">
-            <paper-spinner-lite id="spinnerList" active></paper-spinner-lite>
-            <span>Loading Music List...</span>
+      <app-header-layout has-scrolling-region id="contentWrapper">
+          <app-header reveals slot="header">
+            <app-toolbar>
+              <div main-title>VIP Aersia</div>
+            </app-toolbar>
+          </app-header>
+
+          <div id="content">
+            <div id="listLoadingIndicator">
+              <div id="loadingContent">
+                <paper-spinner-lite id="spinnerList" active></paper-spinner-lite>
+                <span>Loading Music List...</span>
+              </div>
+            </div>
+            <paper-listbox id="musicListbox" selected={{selectedSong.songNum}}>
+              <template is="dom-repeat" items="[[musicList.tracks]]">
+                <paper-item on-tap="handleTap">
+                  [[item.creator]] - [[item.title]]
+                </paper-item>
+              </template>
+            </paper-listbox>
           </div>
-        </div>
-        <paper-listbox id="musicListbox" selected={{selectedSong.songNum}}>
-          <template is="dom-repeat" items="[[musicList.tracks]]">
-            <paper-item on-tap="handleTap">
-              [[item.creator]] - [[item.title]]
-            </paper-item>
-          </template>
-        </paper-listbox>
-      </div>
+        </app-header-layout>
       <audio-player id="player" current-song={{selectedSong}}>
       </audio-player>
     </div>
