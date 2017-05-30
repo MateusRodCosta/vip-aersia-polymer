@@ -123,6 +123,7 @@
         super.ready();
         this.$.player.addEventListener('skip-song', e => {this.skipSong(e)});
         this.$.player.addEventListener('next-song', e => {this.nextSong(e)});
+        this.$.player.addEventListener('play-new-song', e => {this.playNewSong(e)});
       }
       handleResponse(data) {
         var response = data.detail.response;
@@ -168,9 +169,6 @@
           newSong = numberOfSongs - 1;
 
         this.selectedSong = this.musicList.tracks[newSong];
-
-        var songitem = this.$.musicListbox.selectedItem;
-        songitem.scrollIntoView({block: "start", behavior: "smooth"});
       }
       nextSong(e) {
         var numberOfSongs = parseInt(this.musicList.numberOfSongs, 10);
@@ -180,15 +178,25 @@
           newSong = Math.floor(Math.random() * numberOfSongs);
         }
         this.selectedSong = this.musicList.tracks[newSong];
-
-        var songitem = this.$.musicListbox.selectedItem;
-        songitem.scrollIntoView({block: "start", behavior: "smooth"});
       }
       _musicListLoaded(newValue, oldValue) {
         var numSong = Math.floor(Math.random() * parseInt(newValue.numberOfSongs, 10));
         this.selectedSong = newValue.tracks[numSong];
       }
       _musicChanged() {
+      }
+      playNewSong() {
+        var songItem = this.$.musicListbox.selectedItem;
+        var container = this.$.contentWrapper;
+        var containerGap = container.clientHeight / 2;
+        var songPosition = songItem.offsetTop;
+        var newPosition;
+        if(songPosition < containerGap) {
+          newPosition = 0;
+        } else {
+          newPosition = songPosition - containerGap;
+        }
+        container.header.scroll(0, newPosition);
       }
     }
 

@@ -114,6 +114,7 @@
         this.$.audioTrack.play();
         this.$.playerLoading.style.display = "none";
         this.$.playerInfo.style.display = "block";
+        this.dispatchEvent(new CustomEvent('play-new-song', {bubbles: true}));
       }
       _songChanged() {
         this.loadingSong();
