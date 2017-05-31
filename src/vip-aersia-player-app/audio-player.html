@@ -28,11 +28,14 @@
         display: block;
         padding: 8px;
       }
+      #spinnerPlayer {
+        --paper-spinner-color: var(--accent-color);
+      }
     </style>
     <div id="player">
       <div id="player-left" class="flex">
         <div id="playerLoading">
-          <paper-spinner-lite id="spinnerList" active></paper-spinner-lite>
+          <paper-spinner-lite id="spinnerPlayer" active></paper-spinner-lite>
         </div>
         <div id="playerInfo">
           <div id="creator"><strong>[[currentSong.creator]]</strong></div>
